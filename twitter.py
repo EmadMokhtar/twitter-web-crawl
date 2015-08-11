@@ -1,5 +1,6 @@
 import requests
 import time
+import sys
 from lxml import html
 
 class TwitterCrawler:
@@ -36,7 +37,7 @@ class TwitterCrawler:
 		bio = tree.xpath('//p[@class="ProfileHeaderCard-bio u-dir"]/text()')[0]
 		join_date = tree.xpath('//div[@class="ProfileHeaderCard-joinDate"]/span[@class="ProfileHeaderCard-joinDateText js-tooltip u-dir"]/text()')[0]
 		followed_accounts = tree.xpath('//a[@class="js-user-profile-link"]/@href')
-		followed = ['https://www.twitter.com{0}'.format(f) for f in followed_accounts]
+		followed = [TwitterProfile.build_twiiter_url(f) for f in followed_accounts]
 
 		profile = TwitterProfile(name, username, bio, followed, join_date)
 
@@ -54,7 +55,20 @@ class TwitterProfile:
 	def __str__(self):
 		return "Fullname: {0}, Username: {1}, Join Date: {2} Bio: {3} \n\r".format(self.name, self.username, self.join_date, self.bio)
 
-crawler = TwitterCrawler('http://twitter.com/emadmokhtar', 1)
+	@staticmethod
+	def build_twiiter_url(username):
+		username = username.replace('/','')
+		return 'https://www.twitter.com/{0}'.format(username)
+
+try:
+	twitter_username = sys.argv[1]
+	depth = sys.argv[2]
+except IndexError:
+	print 'Missing Arguments, please check your Arguments \n\r Format: twitter.py <username> <depth>'
+	sys.exit(1)
+
+url = TwitterProfile.build_twiiter_url(twitter_username)
+crawler = TwitterCrawler(url, depth)
 crawler.crawl()
 
 for profile in crawler.profiles:
