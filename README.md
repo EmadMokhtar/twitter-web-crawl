@@ -2,7 +2,7 @@
 Twitter Profile Crawler will crawl a Twitter profile to extract profile's
 
 * 	Full name.
-* 	username.
+* 	Username.
 * 	Bio.
 *  Joining Date.
 * 	Recent followed accounts.
