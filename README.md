@@ -19,5 +19,12 @@ pip install requests
 From terminal:
 
 ```
-python twitter.py
+python twitter.py <username> <depth>
+```
+
+###Example:
+If I want to get profile of @EmadMokhtar for depth = 1
+
+```
+python twitter.py emadmokhtar 1
 ```
